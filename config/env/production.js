@@ -3,22 +3,22 @@
  */
 module.exports = {
   knex: {
-    host: 'hostname',
-    user: 'username',
-    password: 'password',
-    db: 'database',
+    host: 'sql12.freemysqlhosting.net',
+    user: 'sql12364796',
+    password: 'TRt9AtB7Ey',
+    db: 'sql12364796',
     pool: {
       // min and max connections for pooling (For each instance of this server,
       // at least min no. of mysql connections will be opened which can go upto max no. of connections depending on load
       min: 2,
-      max: 50
+      max: 50,
     },
     timeout: 10000, //connection timeout in ms,
-    debug: false
+    debug: false,
   },
 
   redis: {
-    url: "localhost",
+    url: 'localhost',
     port: '6379',
     database: '1',
     password: 'password',
@@ -30,9 +30,9 @@ module.exports = {
     namespace: 'namespace',
     //redis configs for socket.io redis adapter
     redis: {
-      url: "localhost",
+      url: 'localhost',
       port: '6379',
-      password: 'password'
-    }
-  }
+      password: 'password',
+    },
+  },
 };

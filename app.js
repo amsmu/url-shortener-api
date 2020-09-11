@@ -4,9 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var cors = require("cors");
-var compression = require("compression");
-var helmet = require("helmet");
+var cors = require('cors');
+var compression = require('compression');
+var helmet = require('helmet');
 var Utils = require('./src/services/Utils');
 
 //require custom-responses module so that custom responses (by default present in src/responses folder) are available project wide
@@ -20,10 +20,10 @@ var app = express();
 app.use(logger('dev'));
 
 //parse application/json
-app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.json({ limit: '50mb' }));
 
 //parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -42,26 +42,27 @@ app.use(compression());
 app.use('/v1/', v1Routes);
 
 // if no routes found, catch 404 and return error response
-app.use(function(req, res, next) {
+app.use(function (req,res,next) {
+  
   var response = {
     statusCode: 404,
     error: {
-      "code": Utils.config().errorCodes.api_unavailable,
-      "message": "No such endpoint exists"
-    }
+      code: Utils.config().errorCodes.api_unavailable,
+      message: 'No such endpoint exists',
+    },
   };
 
   return res.error(response);
 });
 
 // error handler in case of parsing/other errors not handled by controllers
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   var response = {
     statusCode: err.status || 500,
     error: {
-      "code": Utils.isEmpty(err.code) ? Utils.config().errorCodes.api_unexpected_error : err.code,
-      "message": err.message
-    }
+      code: Utils.isEmpty(err.code) ? Utils.config().errorCodes.api_unexpected_error : err.code,
+      message: err.message,
+    },
   };
 
   return res.error(response);
@@ -70,7 +71,7 @@ app.use(function(err, req, res, next) {
 app.set('port', process.env.PORT || 1337);
 
 var server = app.listen(app.get('port'), function () {
-  console.log('Express server listening on port ' + server.address().port+" Environment: ",process.env.ENV);
+  console.log('Express server listening on port ' + server.address().port + ' Environment: ', process.env.ENV);
 });
 
 /**
