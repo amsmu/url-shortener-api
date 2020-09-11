@@ -1,6 +1,3 @@
-/**
- * Created by codeslayer1 on 05/10/18.
- */
 'use strict';
 var async = require('async');
 var Utils = require('../services/Utils');
@@ -8,7 +5,7 @@ var knex = require('../../lib/knex').knexConnection;
 var SqlString = require('sqlstring');
 
 module.exports = {
-  sampleApiOne: function (params, cb) {
+  fetchUrlUsage: function (params, cb) {
     //Check for mandatory params that needs to be passed in api
     var mandatoryParams = ['url'];
     var missingParam = Utils.checkMandatoryParams(params, mandatoryParams);
@@ -24,27 +21,26 @@ module.exports = {
       );
     }
 
-    async.waterfall([myFirstFunction, myLastFunction], function (err, result) {
+    async.waterfall([fetchCountOfShortenedUrlForSpecificUrl], function (err, result) {
       if (err != null) {
         return Utils.sendErrorResponse(500, err, cb);
       }
       return Utils.sendSuccessResponse(result, cb);
     });
 
-    function myFirstFunction(cb) {
+    function fetchCountOfShortenedUrlForSpecificUrl(cb) {
       knex
-        .raw('select * from `url` where url = ' + SqlString.escape(params.url))
+        .raw(
+          'select count(*) as total_times_shortened from shortened_url as su join url as u where su.url_id=u.id and u.url=' +
+            SqlString.escape(params.url)
+        )
         .then((res) => {
-          cb(null, res[0]);
+          cb(null, res[0][0]);
         })
         .catch((err) => {
           console.log(err);
           cb({ display_message: 'Something went wrong' });
         });
-    }
-
-    function myLastFunction(res, cb) {
-      cb(null, res);
     }
   },
 };
