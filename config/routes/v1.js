@@ -7,10 +7,12 @@ var controllers = require('require-all')(__dirname + '/../../src/controllers/');
 var policies = require('require-all')(__dirname + '/../../src/policies/');
 var Utils = require('../../src/services/Utils');
 
-
 router
-  .post('/url/shorten/usage',  function(req, res, next) {
+  .post('/url/shorten/usage', function (req, res, next) {
     controllers.UrlController.fetchUrlUsage(req, res);
   })
+  .get('/url/shorten/', function (req, res, next) {
+    controllers.UrlController.shortenUrl(req, res);
+  });
 
 module.exports = router;
