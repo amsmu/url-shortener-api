@@ -1,8 +1,9 @@
 'use strict';
-var async = require('async');
-var Utils = require('../services/Utils');
-var knex = require('../../lib/knex').knexConnection;
-var SqlString = require('sqlstring');
+const async = require('async');
+const Utils = require('../services/Utils');
+const knex = require('../../lib/knex').knexConnection;
+const SqlString = require('sqlstring');
+const urlRegex = require('url-regex');
 
 module.exports = {
   shortenUrl: function (params, cb) {
@@ -22,7 +23,7 @@ module.exports = {
     }
 
     async.waterfall(
-      [fetchUrlRecord, checkAndCreateUrlRecord, createShortenedUrlRecord, createShortenedUrl, fetchShortenedUrl],
+      [checkValidUrl, fetchUrlRecord, checkAndCreateUrlRecord, createShortenedUrlRecord, createShortenedUrl, fetchShortenedUrl],
       function (err, result) {
         if (err != null) {
           return Utils.sendErrorResponse(500, err, cb);
@@ -31,7 +32,15 @@ module.exports = {
       }
     );
 
-    function fetchUrlRecord(cb) {
+    function checkValidUrl(cb) {
+      if (urlRegex({ exact: true }).test(params.url)) {
+        cb(null, null);
+      } else {
+        cb({ display_message: 'Invalid Url' });
+      }
+    }
+
+    function fetchUrlRecord(res, cb) {
       knex
         .raw('select id from url where url=' + SqlString.escape(params.url))
         .then((res) => {
@@ -124,14 +133,22 @@ module.exports = {
       );
     }
 
-    async.waterfall([fetchCountOfShortenedUrlForSpecificUrl], function (err, result) {
+    async.waterfall([checkValidUrl, fetchCountOfShortenedUrlForSpecificUrl], function (err, result) {
       if (err != null) {
         return Utils.sendErrorResponse(500, err, cb);
       }
       return Utils.sendSuccessResponse(result, cb);
     });
 
-    function fetchCountOfShortenedUrlForSpecificUrl(cb) {
+    function checkValidUrl(cb) {
+      if (urlRegex({ exact: true }).test(params.url)) {
+        cb(null, null);
+      } else {
+        cb({ display_message: 'Invalid Url' });
+      }
+    }
+
+    function fetchCountOfShortenedUrlForSpecificUrl(res, cb) {
       knex
         .raw(
           'select count(*) as total_times_shortened from shortened_url as su join url as u where su.url_id=u.id and u.url=' +
