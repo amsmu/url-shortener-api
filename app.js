@@ -42,8 +42,7 @@ app.use(compression());
 app.use('/v1/', v1Routes);
 
 // if no routes found, catch 404 and return error response
-app.use(function (req,res,next) {
-  
+app.use(function (req, res, next) {
   var response = {
     statusCode: 404,
     error: {
@@ -73,6 +72,8 @@ app.set('port', process.env.PORT || 1337);
 var server = app.listen(app.get('port'), function () {
   console.log('Express server listening on port ' + server.address().port + ' Environment: ', process.env.ENV);
 });
+
+module.exports = server;
 
 /**
  * Socket server setup below (optional, uncomment when you need to setup socket server)
