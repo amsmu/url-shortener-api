@@ -8,6 +8,8 @@ Apis will run on port:1337
 ## For Tests
 ### npm test
 
+### [POSTMAN COLLECTION](https://www.getpostman.com/collections/d489315bf51a7aa9b1ee)
+
 ### Things I've accomplished
 1. GET api for shortening the URL
 2. POST api for check how many times a particular URL was shortened
