@@ -26,7 +26,7 @@ module.exports = {
       [checkValidUrl, fetchUrlRecord, checkAndCreateUrlRecord, createShortenedUrlRecord, createShortenedUrl, fetchShortenedUrl],
       function (err, result) {
         if (err != null) {
-          return Utils.sendErrorResponse(500, err, cb);
+          return Utils.sendErrorResponse(400, err, cb);
         }
         return Utils.sendSuccessResponse(result, cb);
       }
@@ -135,7 +135,7 @@ module.exports = {
 
     async.waterfall([checkValidUrl, fetchCountOfShortenedUrlForSpecificUrl], function (err, result) {
       if (err != null) {
-        return Utils.sendErrorResponse(500, err, cb);
+        return Utils.sendErrorResponse(400, err, cb);
       }
       return Utils.sendSuccessResponse(result, cb);
     });

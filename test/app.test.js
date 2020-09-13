@@ -16,6 +16,17 @@ describe('Url shortener api', () => {
       });
   });
 
+  it('should fail with invalid url', (done) => {
+    chai
+      .request(server)
+      .get('/v1/url/shorten/')
+      .send({ url: 'hey Whats up?' })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
+
   it('should succeed with url', (done) => {
     chai
       .request(server)
@@ -35,6 +46,17 @@ describe('Url shortener usage api', () => {
       .request(server)
       .post('/v1/url/shorten/usage/')
       .send({ url: '' })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
+
+  it('should fail with invalid url', (done) => {
+    chai
+      .request(server)
+      .post('/v1/url/shorten/usage/')
+      .send({ url: 'hey Whats up?' })
       .end((err, res) => {
         expect(res).to.have.status(400);
         done();
