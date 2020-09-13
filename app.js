@@ -70,7 +70,11 @@ app.use(function (err, req, res, next) {
 app.set('port', process.env.PORT || 1337);
 
 var server = app.listen(app.get('port'), function () {
-  console.log('Express server listening on port ' + server.address().port + ' Environment: ', process.env.ENV);
+  if (process.env.ENV == 'development' || process.env.ENV == 'production') {
+    console.log('Express server listening on port ' + server.address().port + ' Environment: ', process.env.ENV);
+  } else {
+    console.log('ALERT!!! Please set environment variable ENV=development');
+  }
 });
 
 module.exports = server;

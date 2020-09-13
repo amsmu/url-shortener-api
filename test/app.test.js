@@ -4,6 +4,11 @@ const chaiHttp = require('chai-http');
 
 const { expect } = chai;
 chai.use(chaiHttp);
+describe('Check Environment variable', () => {
+  it('should succeed if present',() => {
+    expect(['development','production']).to.include(process.env.ENV);
+  });
+});
 describe('Url shortener api', () => {
   it('should fail without url', (done) => {
     chai
