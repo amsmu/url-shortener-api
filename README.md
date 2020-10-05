@@ -1,4 +1,3 @@
-**Note: For this project I've used the basic Node.js and Express starter kit that we created at my previous job. I love that directory structure and generally start from there or would recreate it even if I've to start from scratch.**
 
 ## Run Commands
 ### Set environment variable ENV=development (if not then it ask you to after running npm start and test will fail). Uses ENV to pick correct configs. Can be production as well but the configs aren't setup for obvious reasons.
